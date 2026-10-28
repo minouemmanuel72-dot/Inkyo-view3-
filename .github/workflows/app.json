@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Mangi",
+    "slug": "mangi",
+    "scheme": "mangi",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.minouemmanuel.mangi"
+    },
+    "ios": {
+      "bundleIdentifier": "com.minouemmanuel.mangi"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "name": "Mangi"
+    },
+    "experiments": {
+      "baseUrl": "/mangi2"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Mangi a besoin de tes photos pour publier tes planches."
+        }
+      ]
+    ]
+  }
+}
