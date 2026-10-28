@@ -29,6 +29,9 @@ jobs:
       - name: Aligner les versions avec Expo
         run: npx expo install --fix
 
+      - name: Ajouter le support web
+        run: npx expo install react-dom react-native-web @expo/metro-runtime
+
       - name: Construire le site
         env:
           EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
