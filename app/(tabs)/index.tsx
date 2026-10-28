@@ -1,11 +1,12 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Alert, Text } from 'react-native';
+import { Text } from 'react-native';
 import { Button } from '../../src/components/Button';
 import { EmptyState } from '../../src/components/Card';
 import { PostCard } from '../../src/components/PostCard';
 import { Screen } from '../../src/components/Screen';
 import { useAuth } from '../../src/context/AuthContext';
+import { confirmAction, notify } from '../../src/lib/confirm';
 import { useTheme } from '../../src/lib/theme';
 import { listFeed, repostPost } from '../../src/lib/posts';
 import type { FeedItem } from '../../src/types';
@@ -35,20 +36,18 @@ export default function PourToi() {
     }, [load]),
   );
 
-  function askRepost(item: FeedItem) {
+  async function askRepost(item: FeedItem) {
     if (!user) return;
     const owner = item.original ? item.original.author.username : item.author.username;
-    Alert.alert('Partager', `Partager la publication de ${owner} sur ton profil ? Le crédit reste à son créateur.`, [
-      { text: 'Annuler', style: 'cancel' },
-      {
-        text: 'Partager',
-        onPress: async () => {
-          const problem = await repostPost(user, item);
-          if (problem) Alert.alert('Partage impossible', problem);
-          else load();
-        },
-      },
-    ]);
+    const ok = await confirmAction(
+      'Partager',
+      `Partager la publication de ${owner} sur ton profil ? Le crédit reste à son créateur.`,
+      'Partager',
+    );
+    if (!ok) return;
+    const problem = await repostPost(user, item);
+    if (problem) notify('Partage impossible', problem);
+    else load();
   }
 
   return (
